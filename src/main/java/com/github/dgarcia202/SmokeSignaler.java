@@ -13,7 +13,6 @@ import com.rabbitmq.client.*;
 public class SmokeSignaler
 {
   public boolean send()
-    throws URISyntaxException, NoSuchAlgorithmException, TimeoutException, KeyManagementException
   {
     try
     {
@@ -23,20 +22,21 @@ public class SmokeSignaler
       Connection conn = factory.newConnection();
       Channel channel = conn.createChannel();
 
-      channel.exchangeDeclare("my.test.exchange", "direct", true);
+      // channel.exchangeDeclare("my.test.exchange", "direct", true);
       channel.queueDeclare("my.test.queue", true, false, false, null);
-      channel.queueBind("my.test.queue", "my.test.exchange", "routingKey");
+      // channel.queueBind("my.test.queue", "my.test.exchange", "routingKey");
 
       byte[] messageBodyBytes = "Hello, world!".getBytes();
-      channel.basicPublish("my.test.exchange", "routingKey", null, messageBodyBytes);
+      // channel.basicPublish("my.test.exchange", "routingKey", null, messageBodyBytes);
+      channel.basicPublish("", "my.test.queue", null, messageBodyBytes);
 
       channel.close();
       conn.close();
 
       return true;
     }
-    catch (IOException e) {
-      System.out.println("Caught IOException: " + e.getMessage());
+    catch (Exception e) {
+      System.out.println("Caught Exception: " + e.getMessage());
       return false;
     }
   }

@@ -11,10 +11,17 @@ public class App
 
     try
     {
+      /*
       SmokeSignaler ss = new SmokeSignaler();
       boolean success = ss.send();
 
       System.out.println(success ? "Smoke signal sent!!!" : "Smoke signal failed :(");
+      */
+
+      Bus bus = new BusImpl("amqp://guest:guest@localhost:5672");
+      bus.bind("binded.queue");
+      bus.send("hola");
+      bus.dispose();
     }
     catch (Exception e)
     {
